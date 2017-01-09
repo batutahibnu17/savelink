@@ -1,0 +1,105 @@
+Imports System.Data
+Imports System.Data.Odbc
+Public Class Form1
+    Dim data As DataTable
+    Sub tampil()
+        konek()
+        cmd = New Odbc.OdbcCommand("SELECT * FROM data", conn)
+        da = New Odbc.OdbcDataAdapter
+        da.SelectCommand = cmd
+        ds = New Data.DataSet
+        da.Fill(ds, "c")
+        DataGridView1.DataSource = ds
+        DataGridView1.DataMember = "c"
+        conn.Close()
+    End Sub
+    Sub TampilKategori()
+        Call konek()
+        ComboBox1.Items.Clear()
+        cmd = New OdbcCommand("select * from cat", conn)
+        dr = cmd.ExecuteReader
+        While dr.Read
+            ComboBox1.Items.Add(dr.GetString(0))
+        End While
+        conn.Close()
+    End Sub
+    Sub TampilkanData()
+        konek()
+        da = New OdbcDataAdapter("SELECT * FROM data", conn)
+        DS = New DataSet
+        DS.Clear()
+        da.Fill(ds, "data")
+        table = ds.Tables("data")
+        DataGridView1.DataSource = table
+        conn.Close()
+    End Sub
+    Sub kategori()
+        konek()
+        da = New OdbcDataAdapter("SELECT * FROM data WHERE kategori LIKE '%" + TextBox4.Text + "%'", conn)
+        ds = New DataSet
+        ds.Clear()
+        da.Fill(ds, "data")
+        table = ds.Tables("data")
+        DataGridView1.DataSource = table
+        conn.Close()
+    End Sub
+    Sub situs()
+        konek()
+        da = New OdbcDataAdapter("SELECT * FROM data WHERE situs LIKE '%" + TextBox6.Text + "%'", conn)
+        ds = New DataSet
+        ds.Clear()
+        da.Fill(ds, "data")
+        table = ds.Tables("data")
+        DataGridView1.DataSource = table
+        conn.Close()
+    End Sub
+    Sub catatan()
+        konek()
+        da = New OdbcDataAdapter("SELECT * FROM data WHERE situs LIKE '%" + TextBox5.Text + "%'", conn)
+        ds = New DataSet
+        ds.Clear()
+        da.Fill(ds, "data")
+        table = ds.Tables("data")
+        DataGridView1.DataSource = table
+        conn.Close()
+    End Sub
+
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        ToolStripStatusLabel2.Text = Format(Now, "dddd, dd-MMMM-yyyy")
+        Call TampilkanData()
+        Call TampilKategori()
+    End Sub
+
+    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+        ToolStripStatusLabel3.Text = Format(Now, "hh:mm:ss")
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Call konek()
+        Dim simpan2 As String = "INSERT INTO `data` values ('" & TextBox1.Text & "', '" & TextBox2.Text & "', '" & ComboBox1.Text & "', '" & TextBox3.Text & "')"
+        cmd = New OdbcCommand(simpan2, conn)
+        cmd.ExecuteNonQuery()
+        MsgBox("TERSIMPAN")
+        conn.Close()
+    End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        Me.Hide()
+        Form2.ShowDialog()
+    End Sub
+    Private Sub TextBox4_TextChanged(sender As Object, e As EventArgs) Handles TextBox4.TextChanged
+        Call kategori()
+    End Sub
+
+    Private Sub DataGridView1_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellContentClick
+        Call tampil()
+    End Sub
+
+    Private Sub TextBox5_TextChanged(sender As Object, e As EventArgs) Handles TextBox5.TextChanged
+        Call catatan()
+    End Sub
+
+    Private Sub TextBox6_TextChanged(sender As Object, e As EventArgs) Handles TextBox6.TextChanged
+        Call situs()
+    End Sub
+End Class
