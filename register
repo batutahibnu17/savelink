@@ -1,0 +1,19 @@
+Imports System.Data
+Imports System.Data.Odbc
+Imports System.Data.Odbc.OdbcException
+Public Class register
+
+    Private Sub Form3_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    End Sub
+    Private Sub Button1_Click(sender As System.Object, e As System.EventArgs) Handles Button1.Click
+        Call konek()
+        Dim simpan As String = "INSERT INTO `user` values ('" & TextBox5.Text & "', '" & TextBox1.Text & "', '" & TextBox2.Text & "', '" & TextBox3.Text & "')"
+        cmd = New OdbcCommand(simpan, conn)
+        cmd.ExecuteNonQuery()
+        MsgBox("Account created!")
+        Me.Hide()
+        LoginForm1.Show()
+        conn.Close()
+    End Sub
+    
+End Class
