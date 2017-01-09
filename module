@@ -1,0 +1,19 @@
+Imports System.Data.Odbc
+Imports System.Data
+Module Module1
+    Public conn As OdbcConnection
+    Public da As OdbcDataAdapter
+    Public ds As DataSet
+    Public cmd As OdbcCommand
+    Public dr As OdbcDataReader
+    Public enq As OdbcPermissionAttribute
+    Public strcon As String
+    Public Sub konek()
+        Try
+            conn = New OdbcConnection("Driver={MySQL ODBC 5.1 Driver};server=localhost;uid=root;database=main;port=3306;auto_reconnect=1;no_i_s=1")
+            conn.Open()
+        Catch ex As Exception
+            MsgBox(ex.ToString())
+        End Try
+    End Sub
+End Module
