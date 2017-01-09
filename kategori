@@ -1,0 +1,16 @@
+Imports System.Data
+Imports System.Data.Odbc
+Public Class kategori
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Call konek()
+        Dim simpan1 As String = "insert into cat values ('" & TextBox1.Text & "')"
+        cmd = New OdbcCommand(simpan1, conn)
+        cmd.ExecuteNonQuery()
+        MsgBox("Kategori berhasil ")
+        Me.Close()
+        Form1.Show()
+        TextBox1.Text = ""
+        conn.Close()
+    End Sub
+End Class
